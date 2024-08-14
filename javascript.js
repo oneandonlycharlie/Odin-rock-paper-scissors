@@ -16,8 +16,8 @@ function getHumanChoice() {
     return userInput.toUpperCase()
 }
 
-let humanScore = 0;
-let computerScore = 0;
+let humanScore = 0, computerScore= 0;
+
 
 function playRound(humanChoice, computerChoice) {
     if (humanChoice == computerChoice) {
@@ -25,14 +25,18 @@ function playRound(humanChoice, computerChoice) {
     } else if (humanChoice == "PAPER" && computerChoice == "ROCK" 
         || humanChoice == "ROCK" && computerChoice == "SCISSORS" 
         || humanChoice == "SCISSORS" && computerChoice == "PAPER") {
-        console.log(`You win! ${ humanChoice } beats ${ computerChoice }`);
-        humanScore++;
+        console.log(`You win! ${ humanChoice } beats ${ computerChoice }`), humanScore++;
     } else 
-        console.log(`You lose! ${ computerChoice } beats ${ humanChoice }`);
-        computerScore++;
+        console.log(`You lose! ${ computerChoice } beats ${ humanChoice }`), computerScore++;
 }
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
 
-playRound(humanSelection, computerSelection);
+function playGame(game, numOfRounds) {
+    while (numOfRounds > 0) {
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice();
+        game(humanSelection,computerSelection), numOfRounds--;
+    }
+}
+
+playGame(playRound,5)
