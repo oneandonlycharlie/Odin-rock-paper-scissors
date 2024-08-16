@@ -11,32 +11,50 @@ function getComputerChoice() {
     else return 'SCISSORS'
 }
 
-function getHumanChoice() {
-    let userInput = prompt("What would you like to choose? Rock/Paper/Scissors")
-    return userInput.toUpperCase()
+const buttons = document.querySelector("body")
+buttons.addEventListener("click", (e) => {
+    let target = e.target;
+    console.log(target)
+    console.log(target.className)
+    let computerSelection = getComputerChoice();
+    let humanSelection = ""
+    switch(target.className){
+        case "Rock":
+            humanSelection = getHumanChoice("Rock");
+            break;
+        case "Paper":
+            humanSelection = getHumanChoice("Paper");
+            break;
+        case "Scissors":
+            humanSelection = getHumanChoice("Scissors");
+            break;
+    }
+    playRound(humanSelection,computerSelection);
+})
+
+function getHumanChoice(str) {
+    return str.toUpperCase()
 }
 
 let humanScore = 0, computerScore= 0;
 
+// create leaderboard //
+const body = document.querySelector("body");
+let leaderBoard = document.createElement("div");
+leaderBoard.textContent = `humanscore: ${humanScore} computerscore ${computerScore}`;
+body.appendChild(leaderBoard);
 
 function playRound(humanChoice, computerChoice) {
+    let text = ""
     if (humanChoice == computerChoice) {
-        console.log(`You both chose ${ humanChoice }, it's a tie`);
+        text = document.createTextNode(`You both chose ${ humanChoice }, it's a tie`);
     } else if (humanChoice == "PAPER" && computerChoice == "ROCK" 
         || humanChoice == "ROCK" && computerChoice == "SCISSORS" 
         || humanChoice == "SCISSORS" && computerChoice == "PAPER") {
-        console.log(`You win! ${ humanChoice } beats ${ computerChoice }`), humanScore++;
+        text = document.createTextNode(`You win! ${ humanChoice } beats ${ computerChoice }`), humanScore++;
     } else 
-        console.log(`You lose! ${ computerChoice } beats ${ humanChoice }`), computerScore++;
+        text = document.createTextNode(`You lose! ${ computerChoice } beats ${ humanChoice }`), computerScore++;
+    leaderBoard.textContent = `humanscore: ${humanScore} computerscore ${computerScore}   `;
+    leaderBoard.appendChild(text);
 }
 
-
-function playGame(game, numOfRounds) {
-    while (numOfRounds > 0) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        game(humanSelection,computerSelection), numOfRounds--;
-    }
-}
-
-playGame(playRound,5)
